@@ -37,9 +37,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case SEARCH_ITEM:
-                return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.search_list_item, parent, false));
+                return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.search_list_item, parent, false), viewType);
             case VIEW_TYPE_MORE_LOADING:
-                return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.more_loading_layout, parent, false));
+                return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.more_loading_layout, parent, false), viewType);
         }
         return null;
     }
@@ -92,18 +92,22 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         private TextView movieName;
         private TextView movieYear;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, int viewType) {
             super(itemView);
-            moviePoster = itemView.findViewById(R.id.movie_image);
-            movieName = itemView.findViewById(R.id.movie_title);
-            movieYear = itemView.findViewById(R.id.year);
-            moviePoster.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = (int) v.getTag();
-                    mClickListener.setOnItemClick(v, pos, mSearchItems.get(pos));
-                }
-            });
+            switch (viewType) {
+                case SEARCH_ITEM:
+                    moviePoster = itemView.findViewById(R.id.movie_image);
+                    movieName = itemView.findViewById(R.id.movie_title);
+                    movieYear = itemView.findViewById(R.id.year);
+                    moviePoster.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int pos = (int) v.getTag();
+                            mClickListener.setOnItemClick(v, pos, mSearchItems.get(pos));
+                        }
+                    });
+                    break;
+            }
         }
     }
 }
